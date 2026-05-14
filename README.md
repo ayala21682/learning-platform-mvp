@@ -64,8 +64,8 @@ Optional for local development without Docker:
 ## 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/ayala21682/learning-platform-mvp.git
+cd learning-platform-mvp
 ```
 
 ---
@@ -108,8 +108,6 @@ FIRST_ADMIN_PHONE=0500000000
 FIRST_ADMIN_PASSWORD=admin123
 ```
 
-> Important:  
-> The `.env` file contains secrets and should not be committed to Git.
 
 ---
 
@@ -135,7 +133,7 @@ docker compose up -d
 ## Backend
 
 ```bash
-cd python_backend
+cd backend
 
 python -m venv venv
 
@@ -149,10 +147,10 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-## Frontend
+## Fronted
 
 ```bash
-cd frontend
+cd fronted
 
 npm install
 npm run dev
