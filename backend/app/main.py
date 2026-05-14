@@ -3,7 +3,11 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base, SessionLocal
-from .routes import user_router, prompt_router, category_router, subcategory_router, auth_router
+from .routes.user_router import router as user_router
+from .routes.prompt_router import router as prompt_router
+from .routes.category_router import router as category_router
+from .routes.subcategory_router import router as subcategory_router
+from .routes.auth_router import router as auth_router
 from .crud.user_crud import get_user_by_phone, create_user
 from .schemas.user import UserCreate
 
@@ -44,9 +48,17 @@ def startup_event():
         try:
             existing_admin = get_user_by_phone(db, admin_phone)
             if existing_admin is None:
+                # Create new admin
                 create_user(db, UserCreate(name=admin_name, last_name=admin_last_name, phone=admin_phone, password=admin_password), role="admin")
+            else:
+                # Update existing admin password and details
+                from .security import get_password_hash
+                existing_admin.name = admin_name
+                existing_admin.last_name = admin_last_name
+                existing_admin.hashed_password = get_password_hash(admin_password)
+                db.commit()
         except Exception as e:
-            print(f"Admin creation skipped: {e}")
+            print(f"Admin setup error: {e}")
         finally:
             db.close()
 

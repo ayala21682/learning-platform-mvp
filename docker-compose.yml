@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: "-c client_encoding=UTF8"
     ports:
       - "5432:5432"
     volumes:
@@ -24,7 +25,7 @@ services:
   # FastAPI Backend
   backend:
     build:
-      context: ./python_backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: learning_platform_api
     env_file:
@@ -38,21 +39,21 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - ./python_backend:/app
+      - ./backend:/app
     networks:
       - learning_platform_network
-    command: sh -c "alembic stamp 68da09df7fa0 2>/dev/null ; alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
   # React Frontend
   frontend:
     build:
-      context: ./frontend
+      context: ./fronted
       dockerfile: Dockerfile
     container_name: learning_platform_frontend
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend/src:/app/src
+      - ./fronted/src:/app/src
     depends_on:
       - backend
     networks:
