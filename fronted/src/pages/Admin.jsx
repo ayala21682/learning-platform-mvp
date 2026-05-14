@@ -146,15 +146,7 @@ export default function Admin() {
             </DataTable>
           </TabPanel>
 
-          <TabPanel header="שיעורים" leftIcon="pi pi-bookmark ml-2">
-            <DataTable value={prompts} paginator rows={10} emptyMessage="אין שיעורים">
-              <Column field="prompt" header="נושא השיעור" />
-              <Column header="קטגוריה / תת" body={promptCategoryTemplate} />
-              <Column header="נוצר על ידי" body={promptUserTemplate} />
-              <Column header="תאריך" body={dateTemplate} />
-              <Column header="פעולות" body={promptActionsTemplate} />
-            </DataTable>
-          </TabPanel>
+          
         </TabView>
       </div>
     </div>
